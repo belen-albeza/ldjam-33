@@ -21,7 +21,9 @@ PlayScene.init = function () {
 PlayScene.create = function () {
   // setup sfx
   this.sfx = {
-    jump: this.game.add.audio('jump')
+    jump: this.game.add.audio('jump'),
+    die: this.game.add.audio('die'),
+    win: this.game.add.audio('win')
   };
 
   // set background
@@ -88,11 +90,13 @@ PlayScene.update = function () {
 
 PlayScene.winLevel = function () {
   // TODO: temp
+  this.sfx.win.play();
   this.game.state.restart();
 };
 
 PlayScene.killHero = function () {
   // TODO: temp
+  this.sfx.die.play();
   this.game.state.restart();
 };
 
