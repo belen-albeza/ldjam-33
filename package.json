@@ -1,0 +1,22 @@
+{
+  "version": "0.0.0",
+  "name": "ld33",
+  "version": "0.0.0",
+  "author": "",
+  "license": "CC-BY-NC-SA-4.0",
+  
+  "repository": "belen-albeza/ldjam-33",
+  "author": "belen-albeza",
+  
+  "dependencies": {
+    "browserify": "*",
+    "gulp": "*",
+    "gulp-connect": "*",
+    "gulp-livereload": "*",
+    "gulp-rsync": "*",
+    "gulp-util": "*",
+    "phaser": "*",
+    "vinyl-source-stream": "*",
+    "watchify": "*"
+  }
+}
