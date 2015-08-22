@@ -29,6 +29,14 @@ var PreloaderScene = {
     this.load.image('cursor', 'images/cursor.png');
     this.load.image('btn:download', 'images/btn_download.png');
 
+    // load audio
+    var sfx = {
+      'jump': 'jump.wav'
+    };
+    Object.keys(sfx).forEach(function (key) {
+      this.game.load.audio(key, 'audio/' + sfx[key]);
+    }.bind(this));
+
     // load level data
     this.load.text('level:1', 'data/level1.json');
   },

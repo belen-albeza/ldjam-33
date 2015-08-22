@@ -19,34 +19,40 @@ PlayScene.init = function () {
 };
 
 PlayScene.create = function () {
+  // setup sfx
+  this.sfx = {
+    jump: this.game.add.audio('jump')
+  };
+
+  // set background
+  this.game.add.sprite(0, 0, 'background');
+
   // load map
   var data = JSON.parse(this.game.cache.getText('level:1'));
-
-  this.game.add.sprite(0, 0, 'background');
-  
   this.level = new Level(this.game, data);
 
-
+  // create main character
   this.hero = new Hades(this.game,
     data.hero.x * Level.TSIZE + Level.TSIZE / 2,
-    data.hero.y * Level.TSIZE + Level.TSIZE / 2);
+    data.hero.y * Level.TSIZE + Level.TSIZE / 2,
+    this.sfx);
   this.game.add.existing(this.hero);
+  this.game.camera.follow(this.hero);
 
+  // create the goal sprite the hero needs to reach
   this.goal = new Pomegranate(this.game,
     data.goal.x * Level.TSIZE + Level.TSIZE / 2,
     data.goal.y * Level.TSIZE + Level.TSIZE / 2);
   this.game.add.existing(this.goal);
 
+  // create the in-game level editor
   this.gui = this.add.group();
   this.editor = new Editor(this.gui, this.level);
-
   this.keys.escape.onDown.add(this.toggleEditor, this);
-
   this.isEditMode = false;
   this.gui.visible = false;
 
-  this.game.camera.follow(this.hero);
-
+  // setup some listeners
   this.keys.up.onDown.add(this.hero.jump, this.hero);
   this.level.onDeadlyTile.add(function (sprite) {
     if (sprite === this.hero) {
