@@ -25,6 +25,8 @@ function Level(game, data) {
 
   this.layer().resizeWorld();
   this.commit();
+
+  this.onDeadlyTile = new Phaser.Signal();
 }
 
 Level.prototype.layer = function () {
@@ -46,9 +48,12 @@ Level.prototype.export = function () {
 Level.prototype.commit = function () {
   this.layers.forEach(function (layer) {
     this.map.setCollisionByExclusion([1], true, layer);
+    // this.map.setTileIndexCallback([0], null); // remove previous callbacks
+    this.map.setTileIndexCallback([1], function (x, y) {
+      this.onDeadlyTile.dispatch(x, y);
+    }, this, layer);
   }.bind(this));
 };
-
 
 Level.TSIZE = TSIZE;
 
