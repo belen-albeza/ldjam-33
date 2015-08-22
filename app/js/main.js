@@ -21,8 +21,14 @@ var PreloaderScene = {
     this.loadingBar.anchor.setTo(0, 0.5);
     this.load.setPreloadSprite(this.loadingBar);
 
-    // TODO: load here the assets for the game
-    this.game.load.image('logo', 'images/phaser.png');
+    // load images
+    this.load.image('hero', 'images/hero.png');
+    this.load.image('tiles:physics', 'images/physics_tiles.png');
+    this.load.image('cursor', 'images/cursor.png');
+    this.load.image('btn:download', 'images/btn_download.png');
+
+    // load level data
+    this.load.text('level:1', 'data/level1.json');
   },
 
   create: function () {
