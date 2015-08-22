@@ -3,7 +3,6 @@
 var TSIZE = 50;
 
 function fillLayerWithTileData(layer, data) {
-  console.log(data);
   data.forEach(function (row, rowIndex) {
     row.forEach(function (tile, colIndex) {
        layer.map.putTile(tile, colIndex, rowIndex, layer);
@@ -12,6 +11,7 @@ function fillLayerWithTileData(layer, data) {
 }
 
 function Level(game, data) {
+  this.data = data;
   this.map = game.add.tilemap();
   this.map.addTilesetImage('physics', 'tiles:physics', TSIZE, TSIZE);
 
@@ -24,7 +24,7 @@ function Level(game, data) {
   }.bind(this));
 
   this.layer().resizeWorld();
-  this.data = data;
+  this.commit();
 }
 
 Level.prototype.layer = function () {
@@ -41,6 +41,12 @@ Level.prototype.export = function () {
   });
 
   return this.data;
+};
+
+Level.prototype.commit = function () {
+  this.layers.forEach(function (layer) {
+    this.map.setCollisionByExclusion([1], true, layer);
+  }.bind(this));
 };
 
 
