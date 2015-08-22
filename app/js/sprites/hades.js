@@ -1,5 +1,8 @@
 'use strict';
 
+var JUMP_SPEED = 600;
+var MOVE_SPEED = 300;
+
 function Hades(game, x, y) {
   // call parent constructor
   Phaser.Sprite.call(this, game, x, y, 'hero');
@@ -12,5 +15,15 @@ function Hades(game, x, y) {
 
 Hades.prototype = Object.create(Phaser.Sprite.prototype);
 Hades.prototype.constructor = Hades;
+
+Hades.prototype.jump = function () {
+  if (this.body.onFloor()) {
+    this.body.velocity.y = -JUMP_SPEED;
+  }
+};
+
+Hades.prototype.move = function (direction) {
+  this.body.velocity.x = MOVE_SPEED * direction;
+};
 
 module.exports = Hades;
