@@ -22,6 +22,7 @@ var PreloaderScene = {
     this.load.setPreloadSprite(this.loadingBar);
 
     // load images
+    this.load.image('background', 'images/background.png');
     this.load.image('hero', 'images/hero.png');
     this.load.image('goal', 'images/pomegranate.png');
     this.load.image('tiles:physics', 'images/physics_tiles.png');

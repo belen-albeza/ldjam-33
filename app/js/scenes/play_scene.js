@@ -22,7 +22,10 @@ PlayScene.create = function () {
   // load map
   var data = JSON.parse(this.game.cache.getText('level:1'));
 
+  this.game.add.sprite(0, 0, 'background');
+  
   this.level = new Level(this.game, data);
+
 
   this.hero = new Hades(this.game,
     data.hero.x * Level.TSIZE + Level.TSIZE / 2,
