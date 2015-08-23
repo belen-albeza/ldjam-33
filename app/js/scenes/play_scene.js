@@ -10,14 +10,17 @@ var LandEnemy = require('../sprites/land_enemy.js');
 var PlayScene = {};
 
 var GRAVITY = 950;
+var LEVEL_COUNT = 1;
 
-PlayScene.init = function () {
+PlayScene.init = function (levelIndex) {
   this.game.physics.startSystem(Phaser.Physics.ARCADE);
   this.game.physics.arcade.gravity.y = GRAVITY;
 
   this.keys = this.game.input.keyboard.createCursorKeys();
   this.keys.escape = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
   this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.ESC);
+
+  this.currentLevel = levelIndex;
 };
 
 PlayScene.create = function () {
@@ -29,14 +32,14 @@ PlayScene.create = function () {
     coin: this.game.add.audio('coin')
   };
   this.soundtrack = this.game.add.audio('background');
-  this.soundtrack.fadeIn(1200, true);
+  // this.soundtrack.fadeIn(1200, true);
 
   // set background
   var background = this.game.add.image(0, 0, 'background');
   background.fixedToCamera = true;
 
   // load map
-  var data = JSON.parse(this.game.cache.getText('level:1'));
+  var data = JSON.parse(this.game.cache.getText('level:' + this.currentLevel));
   this.level = new Level(this.game, data);
 
   // create the sprites from level data
@@ -47,6 +50,7 @@ PlayScene.create = function () {
   this._setupHud();
 
   this.isGameOver = false;
+  this.wasVictory = false;
 
   // start the chrono
   this.chrono = this.game.time.create(false);
@@ -127,9 +131,16 @@ PlayScene.winLevel = function () {
   this.showGameOver(true);
 };
 
+PlayScene._isLastLevel = function () {
+  return this.currentLevel >= LEVEL_COUNT;
+};
+
 PlayScene.showGameOver = function (wasVictory) {
   this.isGameOver = true;
-  this.messageText.setText(wasVictory ? 'Victory!' : 'Game Over');
+  this.wasVictory = wasVictory;
+  this.messageText.setText(this._isLastLevel() ? 'Victory' : 'Yay!');
+  this.restartText.setText('-' +
+    (this._isLastLevel() ? 'Play again' : 'Next level') + '-');
   this.gameOverHud.visible = true;
 
   this.hero.freeze();
@@ -155,7 +166,8 @@ PlayScene.render = function () {
 PlayScene.wrathOfGod = function () {
   this.soundtrack.stop();
   this.chrono.destroy();
-  this.game.state.restart(true, false);
+  this.game.state.restart(true, false,
+    this._isLastLevel() ? 1 : this.currentLevel + 1);
 };
 
 PlayScene._spawnSprites = function (data) {

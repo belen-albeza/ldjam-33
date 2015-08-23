@@ -47,10 +47,11 @@ var PreloaderScene = {
 
     // load level data
     this.load.text('level:1', 'data/level1.json');
+    this.load.text('level:2', 'data/level2.json');
   },
 
   create: function () {
-    this.game.state.start('play');
+    this.game.state.start('play', true, false, 1);
   }
 };
 
@@ -66,8 +67,8 @@ function startGame() {
 
 window.onload = function () {
   // for dev mode
-  // document.querySelector('.overlay').style.display = 'none';
-  // startGame();
+  document.querySelector('.overlay').style.display = 'none';
+  startGame();
 
   // for production
   document.getElementById('play').addEventListener('click', function (evt) {
