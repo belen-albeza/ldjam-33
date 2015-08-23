@@ -7,7 +7,9 @@ function LandEnemy(game, x, y, level) {
   Phaser.Sprite.call(this, game, x, y, 'ghost');
   this.level = level;
 
-  this.anchor.setTo(0.5);
+  this.anchor.setTo(0.5, 1);
+  this.animations.add('walk', [0, 1], 4, true);
+  this.animations.play('walk');
 
   this.game.physics.enable(this);
   this.body.bounce.setTo(1, 0);

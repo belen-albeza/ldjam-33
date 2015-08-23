@@ -28,8 +28,11 @@ Hades.prototype.jump = function () {
 };
 
 Hades.prototype.move = function (direction) {
-  var prevVelocity = this.body.velocity.x;
   this.body.velocity.x = MOVE_SPEED * direction;
+
+  if (direction !== 0) {
+    this.scale.setTo(direction, 1);
+  }
 };
 
 module.exports = Hades;

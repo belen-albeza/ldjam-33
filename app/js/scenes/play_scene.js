@@ -64,8 +64,8 @@ PlayScene.create = function () {
   this.enemies = this.add.group();
   data.ghosts.forEach(function (data) {
     var enemy = new LandEnemy(this.game,
-      data.x * Level.TSIZE + Level.TSIZE / 2,
-      data.y * Level.TSIZE + Level.TSIZE / 2,
+      data.x * Level.TSIZE + Level.TSIZE,
+      data.y * Level.TSIZE + Level.TSIZE,
       this.level);
     this.enemies.add(enemy);
   }.bind(this));
