@@ -8,6 +8,8 @@ function Hades(game, x, y, sfx) {
   Phaser.Sprite.call(this, game, x, y, 'hero');
 
   this.anchor.setTo(0.5);
+  this.animations.add('walk', [0, 1], 4, true);
+  this.animations.play('walk');
 
   this.game.physics.enable(this);
   this.body.collideWorldBounds = true;
@@ -26,6 +28,7 @@ Hades.prototype.jump = function () {
 };
 
 Hades.prototype.move = function (direction) {
+  var prevVelocity = this.body.velocity.x;
   this.body.velocity.x = MOVE_SPEED * direction;
 };
 

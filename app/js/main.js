@@ -23,7 +23,7 @@ var PreloaderScene = {
 
     // load images
     this.load.image('background', 'images/background.png');
-    this.load.image('hero', 'images/hero.png');
+    this.load.spritesheet('hero', 'images/hero.png', 48, 48);
     this.load.image('goal', 'images/pomegranate.png');
     this.load.image('fire', 'images/fire.png');
     this.load.image('ghost', 'images/ghost.png');
