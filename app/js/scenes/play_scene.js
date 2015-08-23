@@ -10,7 +10,7 @@ var LandEnemy = require('../sprites/land_enemy.js');
 var PlayScene = {};
 
 var GRAVITY = 950;
-var LEVEL_COUNT = 1;
+var LEVEL_COUNT = 2;
 
 PlayScene.init = function (levelIndex) {
   this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -20,7 +20,8 @@ PlayScene.init = function (levelIndex) {
   this.keys.escape = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
   this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.ESC);
 
-  this.currentLevel = levelIndex;
+  // this.currentLevel = levelIndex;
+  this.currentLevel = 2;
 };
 
 PlayScene.create = function () {

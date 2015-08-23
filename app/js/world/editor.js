@@ -62,9 +62,9 @@ Editor.prototype._setupHud = function () {
   this.prefabPalette.visible = false;
 
   // create download button
-  var downloadButton = this.game.make.button(900, this.game.world.height,
+  var downloadButton = this.game.make.button(0, 576,
     'btn:download', this.download, this);
-  downloadButton.anchor.setTo(1, 1);
+  downloadButton.anchor.setTo(0, 1);
   this.hud.add(downloadButton);
 };
 
