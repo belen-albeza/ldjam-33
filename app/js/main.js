@@ -49,6 +49,8 @@ var PreloaderScene = {
     this.load.text('level:1', 'data/level1.json');
     this.load.text('level:2', 'data/level2.json');
     this.load.text('level:3', 'data/level3.json');
+    this.load.text('level:4', 'data/level4.json');
+    this.load.text('level:5', 'data/level5.json');
   },
 
   create: function () {
@@ -68,8 +70,8 @@ function startGame() {
 
 window.onload = function () {
   // for dev mode
-  document.querySelector('.overlay').style.display = 'none';
-  startGame();
+  // document.querySelector('.overlay').style.display = 'none';
+  // startGame();
 
   // for production
   document.getElementById('play').addEventListener('click', function (evt) {
