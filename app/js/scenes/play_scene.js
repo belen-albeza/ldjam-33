@@ -4,6 +4,7 @@ var Level = require('../world/level.js');
 var Editor = require('../world/editor.js');
 var Hades = require('../sprites/hades.js');
 var Pomegranate = require('../sprites/pomegranate.js');
+var Trap = require('../sprites/trap.js');
 
 var PlayScene = {};
 
@@ -47,6 +48,16 @@ PlayScene.create = function () {
     data.goal.y * Level.TSIZE + Level.TSIZE / 2);
   this.game.add.existing(this.goal);
 
+  // create the traps
+  this.traps = this.add.group();
+  data.lava.forEach(function (data) {
+    var lava = new Trap(this.game,
+      data.x * Level.TSIZE + Level.TSIZE / 2,
+      data.y * Level.TSIZE + Level.TSIZE / 2,
+      'fire');
+    this.traps.add(lava);
+  }.bind(this));
+
   // create the in-game level editor
   this.gui = this.add.group();
   this.editor = new Editor(this.gui, this.level);
@@ -56,11 +67,6 @@ PlayScene.create = function () {
 
   // setup some listeners
   this.keys.up.onDown.add(this.hero.jump, this.hero);
-  this.level.onDeadlyTile.add(function (sprite) {
-    if (sprite === this.hero) {
-      this.killHero();
-    }
-  }, this);
 };
 
 PlayScene.toggleEditor = function () {
@@ -86,6 +92,8 @@ PlayScene.update = function () {
   this.game.physics.arcade.overlap(this.hero, this.goal, function () {
     this.winLevel();
   }, null, this);
+  this.game.physics.arcade.overlap(this.hero, this.traps, this.killHero, null,
+    this);
 };
 
 PlayScene.winLevel = function () {
@@ -99,5 +107,10 @@ PlayScene.killHero = function () {
   this.sfx.die.play();
   this.game.state.restart();
 };
+
+PlayScene.render = function () {
+  // this.game.debug.body(this.hero);
+};
+
 
 module.exports = PlayScene;

@@ -68,7 +68,7 @@ gulp.task('copy', function () {
   gulp.src([
     'index.html', 'raw.html',
     'styles.css',
-    'images/**/*', 'fonts/**/*', 'audio/**/*'
+    'images/**/*', 'fonts/**/*', 'audio/**/*', 'data/**/*'
   ], { cwd: './app', base: './app' })
   .pipe(gulp.dest('./dist/'));
 
