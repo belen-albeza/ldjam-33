@@ -4,13 +4,14 @@ var Level = require('./level.js');
 
 var CAMERA_SPEED = 8;
 
-var PREFABS = ['hero', 'goal', 'ghosts', 'lava'];
+var PREFABS = ['hero', 'goal', 'ghosts', 'lava', 'coin'];
 
 function Editor(group, level) {
   this.group = group;
   this.level = level;
   this.game = group.game;
   this.currentTile = 0;
+  this.currentPrefab = -1;
 
   this._setupHud();
   this._setupKeys();
@@ -23,6 +24,9 @@ function Editor(group, level) {
   this.cursorText.anchor.setTo(0.5);
   this.group.add(this.cursorText);
   this.selectTile(0);
+
+  this.prefabs = this.game.make.group();
+  this.group.add(this.prefabs);
 }
 
 Editor.prototype._setupHud = function () {
@@ -43,12 +47,24 @@ Editor.prototype._setupHud = function () {
   }, this);
 
   // create sprite pallete
-  // this.prefabs = this.hud.create
+  this.prefabPalette = this.hud.create(0, 576, 'prefabs');
+  this.prefabPalette.anchor.setTo(0, 1);
+  this.prefabsFrame = this.hud.create(0, 0, 'cursor');
+  this.prefabsFrame.anchor.setTo(0, 1);
+  this.prefabPalette.addChild(this.prefabsFrame);
+  this.prefabPalette.inputEnabled = true;
+  this.prefabPalette.events.onInputUp.add(function (sprite, pointer) {
+    var i = this.game.math.snapToFloor(pointer.x, Level.TSIZE) / Level.TSIZE;
+    this.selectPrefab(i);
+    this.toggleHud();
+  }, this);
+  // TODO: disable for now, there's no time for it :(
+  this.prefabPalette.visible = false;
 
   // create download button
-  var downloadButton = this.game.make.button(0, this.game.world.height,
+  var downloadButton = this.game.make.button(900, this.game.world.height,
     'btn:download', this.download, this);
-  downloadButton.anchor.setTo(0, 1);
+  downloadButton.anchor.setTo(1, 1);
   this.hud.add(downloadButton);
 };
 
@@ -79,7 +95,14 @@ Editor.prototype.toggleHud = function () {
 
 Editor.prototype.selectTile = function (index) {
   this.currentTile = index;
-  this.paletteFrame.position.setTo(index * Level.TSIZE, 0);
+  this.currentPrefab = -1;
+  this.paletteFrame.position.x = index * Level.TSIZE;
+};
+
+Editor.prototype.selectPrefab = function (index) {
+  this.currentTile = -1;
+  this.currentPrefab = index;
+  this.prefabsFrame.position.x = index * Level.TSIZE;
 };
 
 Editor.prototype.update = function () {
@@ -103,6 +126,9 @@ Editor.prototype.update = function () {
         this.level.layer());
     }
   }
+
+  this.paletteFrame.visible = this.currentTile >= 0;
+  this.prefabsFrame.visible = this.currentPrefab >= 0;
 
   if (this.keys.left.isDown) { this.game.camera.x -= CAMERA_SPEED; }
   if (this.keys.right.isDown) { this.game.camera.x += CAMERA_SPEED; }

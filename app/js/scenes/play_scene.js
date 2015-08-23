@@ -25,10 +25,11 @@ PlayScene.create = function () {
   this.sfx = {
     jump: this.game.add.audio('jump'),
     die: this.game.add.audio('die'),
-    win: this.game.add.audio('win')
+    win: this.game.add.audio('win'),
+    coin: this.game.add.audio('coin')
   };
   this.soundtrack = this.game.add.audio('background');
-  // this.soundtrack.fadeIn(1200, true);
+  this.soundtrack.fadeIn(1200, true);
 
   // set background
   var background = this.game.add.image(0, 0, 'background');
@@ -50,6 +51,8 @@ PlayScene.create = function () {
   // start the chrono
   this.chrono = this.game.time.create(false);
   this.chrono.start();
+  // start coin counter / score
+  this.score = 0;
 
   // setup some listeners
   this.keys.up.onDown.add(function () {
@@ -90,9 +93,12 @@ PlayScene.update = function () {
     this);
   this.game.physics.arcade.overlap(this.hero, this.enemies, this.killHero, null,
     this);
+  this.game.physics.arcade.overlap(this.hero, this.coins, this.pickup, null,
+    this);
 
   if (!this.isGameOver) {
     this.updateChrono();
+    this.updateScore();
   }
 };
 
@@ -101,6 +107,10 @@ function padNumber(n, size) {
   while (res.length < size) { res = '0' + res; }
   return res;
 }
+
+PlayScene.updateScore = function () {
+  this.scoreText.setText(this.score);
+};
 
 PlayScene.updateChrono = function () {
   var elapsed = this.chrono.ms;
@@ -125,6 +135,12 @@ PlayScene.showGameOver = function (wasVictory) {
   this.hero.freeze();
 };
 
+PlayScene.pickup = function (hero, coin) {
+  this.sfx.coin.play();
+  coin.kill();
+  this.score += 50;
+};
+
 PlayScene.killHero = function () {
   // TODO: temp
   this.sfx.die.play();
@@ -143,6 +159,21 @@ PlayScene.wrathOfGod = function () {
 };
 
 PlayScene._spawnSprites = function (data) {
+  // create pickable objects
+  this.coins = this.game.add.group();
+  data.coins.forEach(function (data) {
+    // TODO: create a custom sprite class for this
+    var coin = this.coins.create(
+      data.x * Level.TSIZE + Level.TSIZE / 2,
+      data.y * Level.TSIZE + Level.TSIZE / 2,
+      'coin');
+    coin.anchor.setTo(0.5);
+    coin.animations.add('rotate', [0, 1, 2, 3], 6, true);
+    coin.play('rotate');
+    this.game.physics.enable(coin);
+    coin.body.allowGravity = false;
+  }.bind(this));
+
   // create main character
   this.hero = new Hades(this.game,
     data.hero.x * Level.TSIZE + Level.TSIZE / 2,
@@ -176,12 +207,6 @@ PlayScene._spawnSprites = function (data) {
       this.level);
     this.enemies.add(enemy);
   }.bind(this));
-
-  this.coins = this.game.add.group();
-
-  // var coin = this.coins.create(50, 100, 'coin');
-  // coin.animations.add('rotate', [0, 1, 2, 3], 6, true);
-  // coin.play('rotate');
 };
 
 PlayScene._setupEditor = function () {
@@ -206,6 +231,9 @@ PlayScene._setupHud = function () {
   };
   this.chronoText = this.game.make.text(10, 0, '0:00:00', chronoStyle);
   this.hud.add(this.chronoText);
+  this.scoreText = this.game.make.text(890, 0, '1000', chronoStyle);
+  this.scoreText.anchor.setTo(1, 0);
+  this.hud.add(this.scoreText);
 
   var messageStyle = {
     font: '80px "Amatic SC"',

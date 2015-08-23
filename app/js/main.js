@@ -31,12 +31,14 @@ var PreloaderScene = {
     this.load.image('tiles', 'images/tiles.png');
     this.load.image('cursor', 'images/cursor.png');
     this.load.image('btn:download', 'images/btn_download.png');
+    this.load.image('prefabs', 'images/prefabs.png');
 
     // load audio
     var sfx = {
       'jump': 'jump.wav',
       'die': 'lose.wav',
       'win': 'win.wav',
+      'coin': 'coin.wav',
       'background': 'background.ogg'
     };
     Object.keys(sfx).forEach(function (key) {
@@ -64,8 +66,8 @@ function startGame() {
 
 window.onload = function () {
   // for dev mode
-  document.querySelector('.overlay').style.display = 'none';
-  startGame();
+  // document.querySelector('.overlay').style.display = 'none';
+  // startGame();
 
   // for production
   document.getElementById('play').addEventListener('click', function (evt) {
