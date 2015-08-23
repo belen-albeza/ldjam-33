@@ -144,6 +144,13 @@ PlayScene.showGameOver = function (wasVictory) {
   this.gameOverHud.visible = true;
 
   this.hero.freeze();
+
+  // listen for any key presses to advance too
+  if (!this._isLastLevel()) {
+    this.game.input.keyboard.onDownCallback = function () {
+      this.wrathOfGod();
+    }.bind(this);
+  }
 };
 
 PlayScene.pickup = function (hero, coin) {
@@ -164,6 +171,7 @@ PlayScene.render = function () {
 };
 
 PlayScene.wrathOfGod = function () {
+  this.game.input.keyboard.onDownCallback = null;
   this.soundtrack.stop();
   this.chrono.destroy();
 
@@ -230,7 +238,7 @@ PlayScene._setupEditor = function () {
   this.gui = this.add.group();
   this.editor = new Editor(this.gui, this.level);
   // dev only - level editor
-  // this.keys.escape.onDown.add(this.toggleEditor, this);
+  this.keys.escape.onDown.add(this.toggleEditor, this);
   this.isEditMode = false;
   this.gui.visible = false;
 };
