@@ -13,7 +13,7 @@ function fillLayerWithTileData(layer, data) {
 function Level(game, data) {
   this.data = data;
   this.map = game.add.tilemap();
-  this.map.addTilesetImage('physics', 'tiles:physics', TSIZE, TSIZE);
+  this.map.addTilesetImage('physics', 'tiles', TSIZE, TSIZE);
 
   this.currentLayerIndex = 0;
   this.layers = data.layers.map(function (layerData) {
@@ -45,7 +45,7 @@ Level.prototype.export = function () {
 
 Level.prototype.commit = function () {
   this.layers.forEach(function (layer) {
-    this.map.setCollisionByExclusion([1], true, layer);
+    this.map.setCollisionByExclusion([], true, layer);
   }.bind(this));
 };
 

@@ -23,7 +23,7 @@ Editor.prototype._setupHud = function () {
   this.group.add(this.hud);
 
   // create palette
-  this.palette = this.hud.create(0, 0, 'tiles:physics');
+  this.palette = this.hud.create(0, 0, 'tiles');
   this.paletteFrame = this.hud.create(0, 0, 'cursor');
   this.palette.addChild(this.paletteFrame);
   this.palette.inputEnabled = true;

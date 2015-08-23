@@ -27,7 +27,7 @@ var PreloaderScene = {
     this.load.spritesheet('ghost', 'images/ghost.png', 32, 44);
     this.load.image('goal', 'images/pomegranate.png');
     this.load.spritesheet('lava', 'images/lava.png', 48, 48);
-    this.load.image('tiles:physics', 'images/physics_tiles.png');
+    this.load.image('tiles', 'images/tiles.png');
     this.load.image('cursor', 'images/cursor.png');
     this.load.image('btn:download', 'images/btn_download.png');
 
