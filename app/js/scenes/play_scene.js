@@ -28,7 +28,7 @@ PlayScene.create = function () {
     win: this.game.add.audio('win')
   };
   this.soundtrack = this.game.add.audio('background');
-  this.soundtrack.fadeIn(1200, true);
+  // this.soundtrack.fadeIn(1200, true);
 
   // set background
   var background = this.game.add.image(0, 0, 'background');
@@ -38,6 +38,110 @@ PlayScene.create = function () {
   var data = JSON.parse(this.game.cache.getText('level:1'));
   this.level = new Level(this.game, data);
 
+  // create the sprites from level data
+  this._spawnSprites(data);
+  // create the in-game level editor
+  this._setupEditor();
+  // create the in-game HUD
+  this._setupHud();
+
+  this.isGameOver = false;
+
+  // start the chrono
+  this.chrono = this.game.time.create(false);
+  this.chrono.start();
+
+  // setup some listeners
+  this.keys.up.onDown.add(function () {
+    if (!this.isEditMode) { this.hero.jump(); }
+  }, this);
+};
+
+PlayScene.toggleEditor = function () {
+    this.isEditMode = !this.isEditMode;
+    this.gui.visible = this.isEditMode;
+    this.camera.follow(this.isEditMode ? null : this.hero);
+};
+
+PlayScene.update = function () {
+  if (this.isEditMode) {
+    this.editor.update();
+  }
+  else {
+    // check for input
+    if (this.keys.left.isDown) {
+      this.hero.move(-1);
+    }
+    else if (this.keys.right.isDown) {
+      this.hero.move(1);
+    }
+    else {
+      this.hero.move(0);
+    }
+  }
+
+  this.game.physics.arcade.collide(this.enemies, this.level.layer());
+  this.game.physics.arcade.collide(this.hero, this.level.layer());
+  this.game.physics.arcade.overlap(this.hero, this.goal, function () {
+    this.winLevel();
+  }, null, this);
+  this.game.physics.arcade.overlap(this.hero, this.traps, this.killHero, null,
+    this);
+  this.game.physics.arcade.overlap(this.hero, this.enemies, this.killHero, null,
+    this);
+
+  if (!this.isGameOver) {
+    this.updateChrono();
+  }
+};
+
+function padNumber(n, size) {
+  var res = n + '';
+  while (res.length < size) { res = '0' + res; }
+  return res;
+}
+
+PlayScene.updateChrono = function () {
+  var elapsed = this.chrono.ms;
+  var ms = elapsed % 1000;
+  var seconds = Math.floor(elapsed / 1000) % 60;
+  var minutes = Math.floor(Math.floor(elapsed / 1000) / 60);
+  this.chronoText.setText(minutes + ':' + padNumber(seconds, 2) + ':' +
+    padNumber(ms, 3));
+};
+
+PlayScene.winLevel = function () {
+  // TODO: temp
+  this.sfx.win.play();
+  this.showGameOver(true);
+};
+
+PlayScene.showGameOver = function (wasVictory) {
+  this.isGameOver = true;
+  this.messageText.setText(wasVictory ? 'Victory!' : 'Game Over');
+  this.gameOverHud.visible = true;
+
+  this.hero.freeze();
+};
+
+PlayScene.killHero = function () {
+  // TODO: temp
+  this.sfx.die.play();
+  this.wrathOfGod();
+};
+
+PlayScene.render = function () {
+  // this.game.debug.body(this.hero);
+  // this.game.debug.body(this.goal);
+};
+
+PlayScene.wrathOfGod = function () {
+  this.soundtrack.stop();
+  this.chrono.destroy();
+  this.game.state.restart(true, false);
+};
+
+PlayScene._spawnSprites = function (data) {
   // create main character
   this.hero = new Hades(this.game,
     data.hero.x * Level.TSIZE + Level.TSIZE / 2,
@@ -71,74 +175,48 @@ PlayScene.create = function () {
       this.level);
     this.enemies.add(enemy);
   }.bind(this));
+};
 
-  // create the in-game level editor
+PlayScene._setupEditor = function () {
   this.gui = this.add.group();
   this.editor = new Editor(this.gui, this.level);
   this.keys.escape.onDown.add(this.toggleEditor, this);
   this.isEditMode = false;
   this.gui.visible = false;
+};
 
-  // setup some listeners
-  this.keys.up.onDown.add(function () {
-    if (!this.isEditMode) { this.hero.jump(); }
+PlayScene._setupHud = function () {
+  this.hud = this.add.group();
+  this.hud.fixedToCamera = true;
+
+  this.gameOverHud = this.make.group();
+  this.hud.add(this.gameOverHud);
+  this.gameOverHud.visible = false;
+
+  var chronoStyle = {
+    font: '40px "Amatic SC"',
+    fill: '#fff'
+  };
+  this.chronoText = this.game.make.text(10, 0, '0:00:00', chronoStyle);
+  this.hud.add(this.chronoText);
+
+  var messageStyle = {
+    font: '80px "Amatic SC"',
+    fill: '#fff'
+  };
+  this.messageText = this.game.make.text(450, 200, 'Victory!', messageStyle);
+  this.messageText.anchor.setTo(0.5);
+  this.gameOverHud.add(this.messageText);
+
+  this.restartText = this.game.make.text(450, 300, '- Play again -',
+    chronoStyle);
+  this.restartText.anchor.setTo(0.5);
+  this.restartText.inputEnabled = true;
+  this.restartText.input.useHandCursor = true;
+  this.restartText.events.onInputUp.add(function () {
+    this.wrathOfGod();
   }, this);
-};
-
-PlayScene.toggleEditor = function () {
-    this.isEditMode = !this.isEditMode;
-    this.gui.visible = this.isEditMode;
-    this.camera.follow(this.isEditMode ? null : this.hero);
-};
-
-PlayScene.update = function () {
-  if (this.isEditMode) {
-    this.editor.update();
-  }
-  else {
-    // check for input
-    if (this.keys.left.isDown) {
-      this.hero.move(-1);
-    }
-    else if (this.keys.right.isDown) {
-      this.hero.move(1);
-    }
-    else {
-      this.hero.move(0);
-    }
-  }
-
-  this.game.physics.arcade.collide(this.hero, this.level.layer());
-  this.game.physics.arcade.collide(this.enemies, this.level.layer());
-  this.game.physics.arcade.overlap(this.hero, this.goal, function () {
-    this.winLevel();
-  }, null, this);
-  this.game.physics.arcade.overlap(this.hero, this.traps, this.killHero, null,
-    this);
-  this.game.physics.arcade.overlap(this.hero, this.enemies, this.killHero, null,
-    this);
-};
-
-PlayScene.winLevel = function () {
-  // TODO: temp
-  this.sfx.win.play();
-  this.wrathOfGod();
-};
-
-PlayScene.killHero = function () {
-  // TODO: temp
-  this.sfx.die.play();
-  this.wrathOfGod();
-};
-
-PlayScene.render = function () {
-  // this.game.debug.body(this.hero);
-  // this.game.debug.body(this.goal);
-};
-
-PlayScene.wrathOfGod = function () {
-  this.soundtrack.stop();
-  this.game.state.restart();
+  this.gameOverHud.add(this.restartText);
 };
 
 

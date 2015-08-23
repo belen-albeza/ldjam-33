@@ -36,4 +36,8 @@ Hades.prototype.move = function (direction) {
   }
 };
 
+Hades.prototype.freeze = function () {
+  this.body.moves = false;
+};
+
 module.exports = Hades;
