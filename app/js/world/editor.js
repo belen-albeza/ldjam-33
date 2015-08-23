@@ -8,12 +8,19 @@ function Editor(group, level) {
   this.game = group.game;
   this.currentTile = 0;
 
+  // create cursor
+  this.cursor = this.group.create(0, 0, 'cursor');
+
+  this._setupHud();
+  this._setupKeys();
+
+  this.selectTile(0);
+}
+
+Editor.prototype._setupHud = function () {
   this.hud = this.game.add.group();
   this.hud.visible = false;
   this.group.add(this.hud);
-
-  // create cursor
-  this.cursor = this.group.create(0, 0, 'cursor');
 
   // create palette
   this.palette = this.hud.create(0, 0, 'tiles:physics');
@@ -31,7 +38,9 @@ function Editor(group, level) {
     'btn:download', this.download, this);
   downloadButton.anchor.setTo(0, 1);
   this.hud.add(downloadButton);
+};
 
+Editor.prototype._setupKeys = function () {
   // register for keyboard events
   this.keys = {};
   // spacebar
@@ -42,8 +51,6 @@ function Editor(group, level) {
   // shift
   this.keys.shift = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
   this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.SHIFT);
-
-  this.selectTile(0);
 }
 
 Editor.prototype.isHudActive = function () {

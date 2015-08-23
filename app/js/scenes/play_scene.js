@@ -28,7 +28,8 @@ PlayScene.create = function () {
   };
 
   // set background
-  this.game.add.sprite(0, 0, 'background');
+  var background = this.game.add.image(0, 0, 'background');
+  background.fixedToCamera = true;
 
   // load map
   var data = JSON.parse(this.game.cache.getText('level:1'));
@@ -66,7 +67,9 @@ PlayScene.create = function () {
   this.gui.visible = false;
 
   // setup some listeners
-  this.keys.up.onDown.add(this.hero.jump, this.hero);
+  this.keys.up.onDown.add(function () {
+    if (!this.isEditMode) { this.hero.jump(); }
+  }, this);
 };
 
 PlayScene.toggleEditor = function () {
@@ -75,17 +78,20 @@ PlayScene.toggleEditor = function () {
 };
 
 PlayScene.update = function () {
-  if (this.isEditMode) { this.editor.update(); }
-
-  // check for input
-  if (this.keys.left.isDown) {
-    this.hero.move(-1);
-  }
-  else if (this.keys.right.isDown) {
-    this.hero.move(1);
+  if (this.isEditMode) {
+    this.editor.update();
   }
   else {
-    this.hero.move(0);
+    // check for input
+    if (this.keys.left.isDown) {
+      this.hero.move(-1);
+    }
+    else if (this.keys.right.isDown) {
+      this.hero.move(1);
+    }
+    else {
+      this.hero.move(0);
+    }
   }
 
   this.game.physics.arcade.collide(this.hero, this.level.layer());
