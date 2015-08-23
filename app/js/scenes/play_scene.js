@@ -113,6 +113,8 @@ PlayScene.update = function () {
   }, null, this);
   this.game.physics.arcade.overlap(this.hero, this.traps, this.killHero, null,
     this);
+  this.game.physics.arcade.overlap(this.hero, this.enemies, this.killHero, null,
+    this);
 };
 
 PlayScene.winLevel = function () {
