@@ -48,6 +48,7 @@ var PreloaderScene = {
     // load level data
     this.load.text('level:1', 'data/level1.json');
     this.load.text('level:2', 'data/level2.json');
+    this.load.text('level:3', 'data/level3.json');
   },
 
   create: function () {
