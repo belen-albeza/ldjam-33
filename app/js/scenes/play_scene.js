@@ -28,7 +28,7 @@ PlayScene.create = function () {
     win: this.game.add.audio('win')
   };
   this.soundtrack = this.game.add.audio('background');
-  // this.soundtrack.fadeIn(1200, true);
+  this.soundtrack.fadeIn(1200, true);
 
   // set background
   var background = this.game.add.image(0, 0, 'background');
