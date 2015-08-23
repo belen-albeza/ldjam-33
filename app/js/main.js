@@ -35,7 +35,8 @@ var PreloaderScene = {
     var sfx = {
       'jump': 'jump.wav',
       'die': 'lose.wav',
-      'win': 'win.wav'
+      'win': 'win.wav',
+      'background': 'background.ogg'
     };
     Object.keys(sfx).forEach(function (key) {
       this.game.load.audio(key, 'audio/' + sfx[key]);

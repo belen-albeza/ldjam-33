@@ -27,6 +27,8 @@ PlayScene.create = function () {
     die: this.game.add.audio('die'),
     win: this.game.add.audio('win')
   };
+  this.soundtrack = this.game.add.audio('background');
+  this.soundtrack.fadeIn(1200, true);
 
   // set background
   var background = this.game.add.image(0, 0, 'background');
@@ -120,18 +122,23 @@ PlayScene.update = function () {
 PlayScene.winLevel = function () {
   // TODO: temp
   this.sfx.win.play();
-  this.game.state.restart();
+  this.wrathOfGod();
 };
 
 PlayScene.killHero = function () {
   // TODO: temp
   this.sfx.die.play();
-  this.game.state.restart();
+  this.wrathOfGod();
 };
 
 PlayScene.render = function () {
   // this.game.debug.body(this.hero);
   // this.game.debug.body(this.goal);
+};
+
+PlayScene.wrathOfGod = function () {
+  this.soundtrack.stop();
+  this.game.state.restart();
 };
 
 
