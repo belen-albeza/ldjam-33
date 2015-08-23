@@ -4,6 +4,8 @@ var Level = require('./level.js');
 
 var CAMERA_SPEED = 8;
 
+var PREFABS = ['hero', 'goal', 'ghosts', 'lava'];
+
 function Editor(group, level) {
   this.group = group;
   this.level = level;
@@ -14,12 +16,19 @@ function Editor(group, level) {
   this._setupKeys();
 
   this.cursor = this.group.create(0, 0, 'cursor');
+  this.cursorText = this.game.make.text(0, 100, '0x0', {
+    font: '16px monospace',
+    fill: '#fff'
+  });
+  this.cursorText.anchor.setTo(0.5);
+  this.group.add(this.cursorText);
   this.selectTile(0);
 }
 
 Editor.prototype._setupHud = function () {
   this.hud = this.game.add.group();
   this.hud.visible = false;
+  this.hud.fixedToCamera = true;
   this.group.add(this.hud);
 
   // create palette
@@ -32,6 +41,9 @@ Editor.prototype._setupHud = function () {
     this.selectTile(i);
     this.toggleHud();
   }, this);
+
+  // create sprite pallete
+  // this.prefabs = this.hud.create
 
   // create download button
   var downloadButton = this.game.make.button(0, this.game.world.height,
@@ -62,6 +74,7 @@ Editor.prototype.isHudActive = function () {
 Editor.prototype.toggleHud = function () {
   this.hud.visible = !this.hud.visible;
   this.cursor.visible = !this.isHudActive();
+  this.cursorText.visible = !this.isHudActive();
 };
 
 Editor.prototype.selectTile = function (index) {
@@ -76,6 +89,10 @@ Editor.prototype.update = function () {
     this.game.input.activePointer.worldY);
 
   this.cursor.position.setTo(tileX * Level.TSIZE, tileY * Level.TSIZE);
+  this.cursorText.position.setTo(
+    this.cursor.position.x + Level.TSIZE / 2,
+    this.cursor.position.y + Level.TSIZE / 2);
+  this.cursorText.setText(tileX + 'x' + tileY);
 
   if (!this.isHudActive() && this.game.input.activePointer.isDown) {
     if (this.keys.shift.isDown) {

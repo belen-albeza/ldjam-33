@@ -25,8 +25,9 @@ var PreloaderScene = {
     this.load.image('background', 'images/background.png');
     this.load.spritesheet('hero', 'images/hero.png', 48, 48);
     this.load.spritesheet('ghost', 'images/ghost.png', 32, 44);
-    this.load.image('goal', 'images/pomegranate.png');
     this.load.spritesheet('lava', 'images/lava.png', 48, 48);
+    this.load.image('goal', 'images/pomegranate.png');
+    this.load.spritesheet('coin', 'images/coin.png', 36, 36);
     this.load.image('tiles', 'images/tiles.png');
     this.load.image('cursor', 'images/cursor.png');
     this.load.image('btn:download', 'images/btn_download.png');
@@ -63,8 +64,8 @@ function startGame() {
 
 window.onload = function () {
   // for dev mode
-  // document.querySelector('.overlay').style.display = 'none';
-  // startGame();
+  document.querySelector('.overlay').style.display = 'none';
+  startGame();
 
   // for production
   document.getElementById('play').addEventListener('click', function (evt) {

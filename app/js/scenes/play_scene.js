@@ -28,7 +28,7 @@ PlayScene.create = function () {
     win: this.game.add.audio('win')
   };
   this.soundtrack = this.game.add.audio('background');
-  this.soundtrack.fadeIn(1200, true);
+  // this.soundtrack.fadeIn(1200, true);
 
   // set background
   var background = this.game.add.image(0, 0, 'background');
@@ -60,6 +60,7 @@ PlayScene.create = function () {
 PlayScene.toggleEditor = function () {
     this.isEditMode = !this.isEditMode;
     this.gui.visible = this.isEditMode;
+    this.hud.visible = !this.isEditMode;
     this.camera.follow(this.isEditMode ? null : this.hero);
 };
 
@@ -175,6 +176,12 @@ PlayScene._spawnSprites = function (data) {
       this.level);
     this.enemies.add(enemy);
   }.bind(this));
+
+  this.coins = this.game.add.group();
+
+  // var coin = this.coins.create(50, 100, 'coin');
+  // coin.animations.add('rotate', [0, 1, 2, 3], 6, true);
+  // coin.play('rotate');
 };
 
 PlayScene._setupEditor = function () {
