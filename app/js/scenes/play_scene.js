@@ -131,6 +131,7 @@ PlayScene.killHero = function () {
 
 PlayScene.render = function () {
   // this.game.debug.body(this.hero);
+  // this.game.debug.body(this.goal);
 };
 
 

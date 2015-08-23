@@ -6,6 +6,7 @@ function Pomegranate(game, x, y) {
   this.anchor.setTo(0.5);
   this.game.physics.enable(this);
   this.body.allowGravity = false;
+  this.body.setSize(20, 20);
 }
 
 Pomegranate.prototype = Object.create(Phaser.Sprite.prototype);

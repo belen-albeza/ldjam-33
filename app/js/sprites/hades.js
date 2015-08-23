@@ -12,6 +12,7 @@ function Hades(game, x, y, sfx) {
   this.animations.play('walk');
 
   this.game.physics.enable(this);
+  this.body.setSize(32, 48);
   this.body.collideWorldBounds = true;
 
   this.sfx = sfx;
