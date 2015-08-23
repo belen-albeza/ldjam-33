@@ -166,8 +166,13 @@ PlayScene.render = function () {
 PlayScene.wrathOfGod = function () {
   this.soundtrack.stop();
   this.chrono.destroy();
-  this.game.state.restart(true, false,
-    this._isLastLevel() ? 1 : this.currentLevel + 1);
+
+  var nextLevel = this.currentLevel;
+  if (this.wasVictory) {
+    nextLevel = this._isLastLevel() ? 1 : this.currentLevel + 1;
+  }
+
+  this.game.state.restart(true, false, nextLevel);
 };
 
 PlayScene._spawnSprites = function (data) {
@@ -224,7 +229,8 @@ PlayScene._spawnSprites = function (data) {
 PlayScene._setupEditor = function () {
   this.gui = this.add.group();
   this.editor = new Editor(this.gui, this.level);
-  this.keys.escape.onDown.add(this.toggleEditor, this);
+  // dev only - level editor
+  // this.keys.escape.onDown.add(this.toggleEditor, this);
   this.isEditMode = false;
   this.gui.visible = false;
 };
