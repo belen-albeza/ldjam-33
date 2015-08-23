@@ -5,6 +5,7 @@ var Editor = require('../world/editor.js');
 var Hades = require('../sprites/hades.js');
 var Pomegranate = require('../sprites/pomegranate.js');
 var Trap = require('../sprites/trap.js');
+var LandEnemy = require('../sprites/land_enemy.js');
 
 var PlayScene = {};
 
@@ -59,6 +60,15 @@ PlayScene.create = function () {
     this.traps.add(lava);
   }.bind(this));
 
+  // create enemies
+  this.enemies = this.add.group();
+  data.ghosts.forEach(function (data) {
+    var enemy = new LandEnemy(this.game,
+      data.x * Level.TSIZE + Level.TSIZE / 2,
+      data.y * Level.TSIZE + Level.TSIZE / 2);
+    this.enemies.add(enemy);
+  }.bind(this));
+
   // create the in-game level editor
   this.gui = this.add.group();
   this.editor = new Editor(this.gui, this.level);
@@ -96,6 +106,7 @@ PlayScene.update = function () {
   }
 
   this.game.physics.arcade.collide(this.hero, this.level.layer());
+  this.game.physics.arcade.collide(this.enemies, this.level.layer());
   this.game.physics.arcade.overlap(this.hero, this.goal, function () {
     this.winLevel();
   }, null, this);

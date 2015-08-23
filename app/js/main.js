@@ -26,6 +26,7 @@ var PreloaderScene = {
     this.load.image('hero', 'images/hero.png');
     this.load.image('goal', 'images/pomegranate.png');
     this.load.image('fire', 'images/fire.png');
+    this.load.image('ghost', 'images/ghost.png');
     this.load.image('tiles:physics', 'images/physics_tiles.png');
     this.load.image('cursor', 'images/cursor.png');
     this.load.image('btn:download', 'images/btn_download.png');
