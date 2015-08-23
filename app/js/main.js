@@ -26,7 +26,7 @@ var PreloaderScene = {
     this.load.spritesheet('hero', 'images/hero.png', 48, 48);
     this.load.spritesheet('ghost', 'images/ghost.png', 32, 44);
     this.load.image('goal', 'images/pomegranate.png');
-    this.load.image('fire', 'images/fire.png');
+    this.load.spritesheet('lava', 'images/lava.png', 48, 48);
     this.load.image('tiles:physics', 'images/physics_tiles.png');
     this.load.image('cursor', 'images/cursor.png');
     this.load.image('btn:download', 'images/btn_download.png');
@@ -52,7 +52,7 @@ var PreloaderScene = {
 
 
 window.onload = function () {
-  var game = new Phaser.Game(900, 600, Phaser.AUTO, 'game');
+  var game = new Phaser.Game(900, 576, Phaser.AUTO, 'game');
 
   game.state.add('boot', BootScene);
   game.state.add('preloader', PreloaderScene);

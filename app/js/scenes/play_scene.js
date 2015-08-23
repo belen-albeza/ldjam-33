@@ -56,7 +56,7 @@ PlayScene.create = function () {
     var lava = new Trap(this.game,
       data.x * Level.TSIZE + Level.TSIZE / 2,
       data.y * Level.TSIZE + Level.TSIZE / 2,
-      'fire');
+      'lava');
     this.traps.add(lava);
   }.bind(this));
 

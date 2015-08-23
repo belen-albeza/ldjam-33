@@ -1,6 +1,6 @@
 'use strict';
 
-var TSIZE = 50;
+var TSIZE = 48;
 
 function fillLayerWithTileData(layer, data) {
   data.forEach(function (row, rowIndex) {

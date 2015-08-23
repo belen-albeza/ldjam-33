@@ -3,3 +3,4 @@ node_modules
 .tmp
 dist
 gulp.config.json
+.DS_Store

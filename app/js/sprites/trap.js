@@ -5,6 +5,8 @@ function Trap(game, x, y, key) {
   Phaser.Sprite.call(this, game, x, y, key);
 
   this.anchor.setTo(0.5);
+  this.animations.add('burn', [0, 1], this.game.rnd.between(1, 5), true);
+  this.animations.play('burn');
 
   this.game.physics.enable(this);
   this.body.allowGravity = false;
