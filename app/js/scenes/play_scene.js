@@ -75,6 +75,7 @@ PlayScene.create = function () {
 PlayScene.toggleEditor = function () {
     this.isEditMode = !this.isEditMode;
     this.gui.visible = this.isEditMode;
+    this.camera.follow(this.isEditMode ? null : this.hero);
 };
 
 PlayScene.update = function () {

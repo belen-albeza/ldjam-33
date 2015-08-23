@@ -2,18 +2,18 @@
 
 var Level = require('./level.js');
 
+var CAMERA_SPEED = 8;
+
 function Editor(group, level) {
   this.group = group;
   this.level = level;
   this.game = group.game;
   this.currentTile = 0;
 
-  // create cursor
-  this.cursor = this.group.create(0, 0, 'cursor');
-
   this._setupHud();
   this._setupKeys();
 
+  this.cursor = this.group.create(0, 0, 'cursor');
   this.selectTile(0);
 }
 
@@ -41,17 +41,19 @@ Editor.prototype._setupHud = function () {
 };
 
 Editor.prototype._setupKeys = function () {
-  // register for keyboard events
-  this.keys = {};
+  // cursor keys
+  this.keys = this.game.input.keyboard.createCursorKeys();
+
   // spacebar
   this.keys.spacebar =
     this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
   this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.SPACEBAR);
   this.keys.spacebar.onDown.add(this.toggleHud, this);
+
   // shift
   this.keys.shift = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
   this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.SHIFT);
-}
+};
 
 Editor.prototype.isHudActive = function () {
   return this.hud.visible;
@@ -84,6 +86,11 @@ Editor.prototype.update = function () {
         this.level.layer());
     }
   }
+
+  if (this.keys.left.isDown) { this.game.camera.x -= CAMERA_SPEED; }
+  if (this.keys.right.isDown) { this.game.camera.x += CAMERA_SPEED; }
+  if (this.keys.up.isDown) { this.game.camera.y -= CAMERA_SPEED; }
+  if (this.keys.down.isDown) { this.game.camera.y += CAMERA_SPEED; }
 };
 
 Editor.prototype.download = function () {
