@@ -3,9 +3,7 @@
 <head>
   <title>LD33</title>
   <meta charset="utf-8">
-
   <link href="styles.css" rel="stylesheet" type="text/css">
-
 </head>
 <body>
   <header>
@@ -21,10 +19,23 @@
   </main>
 
   <footer>
-    <p><strong>Tales of the Underworld: Rebellion of the Souls</strong><br>
-      by <a href="https://twitter.com/ladybenko">@ladybenko</a> for Ludum Dare #33</p>
-    <p class="license">Published under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
-      license.</p>
+   <p class="license">
+       <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4</a></p>
+    <p><strong>"Tales of the Underworld"</strong><br>
+      by <a href="https://twitter.com/ladybenko">@ladybenko</a></p>
+   <p><button class="fullscreen" id="fullscreen"><img src="fs-icon.svg" alt="Fullscreen" width="20" height="20"></button></p>
   </footer>
+
+<script>
+function setElementToFullscreen(elem) {
+    let fsCall = elem.requestFullscreen || elem.webkitRequestFullScreen || elem.msRequestFullscreen;
+    fsCall.apply(elem);
+}
+
+document.getElementById('fullscreen').addEventListener('click', function (e) {
+    e.preventDefault();
+    setElementToFullscreen(document.getElementById('game'));
+});
+</script>
 </body>
 </html>

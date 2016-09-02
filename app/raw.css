@@ -1,5 +1,6 @@
 .overlay {
   background: url(images/background.png) left top no-repeat;
+  background-size: cover;
   position: absolute;
   z-index: 1;
   top: 0;
@@ -14,7 +15,7 @@
 }
 
 .overlay h1 {
-  margin-top: 50px;
+  margin-top: calc(15vh);
   margin-bottom: 10px;
   font-size: 50px;
 }
