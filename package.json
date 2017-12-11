@@ -1,13 +1,9 @@
 {
   "version": "0.0.0",
   "name": "ld33",
-  "version": "0.0.0",
-  "author": "",
-  "license": "CC-BY-NC-SA-4.0",
-  
-  "repository": "belen-albeza/ldjam-33",
   "author": "belen-albeza",
-  
+  "license": "CC-BY-NC-SA-4.0",
+  "repository": "belen-albeza/ldjam-33",
   "dependencies": {
     "browserify": "*",
     "gulp": "*",

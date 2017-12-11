@@ -14,9 +14,6 @@ var livereload = require('gulp-livereload');
 var connect = require('gulp-connect');
 var rsync = require('gulp-rsync');
 
-var config = require('./gulp.config.json');
-
-
 //
 // browserify and js
 //
@@ -39,7 +36,7 @@ gulp.task('browserify', bundle);
 
 // 3rd party libs that don't play nice with browserify
 gulp.task('libs', function () {
-  var dir = './node_modules/phaser/dist/';
+  var dir = './node_modules/phaser/build/';
   gulp.src(['phaser.min.js', 'phaser.map'], { cwd: dir, base: dir})
     .pipe(gulp.dest('./.tmp/js/lib/'));
 });
@@ -77,20 +74,6 @@ gulp.task('copy', function () {
 });
 
 gulp.task('dist', ['build', 'copy']);
-
-gulp.task('deploy', ['dist'], function () {
-  return gulp.src('dist')
-    .pipe(rsync({
-      root: 'dist',
-      username: config.deploy.user,
-      hostname: config.deploy.host,
-      destination: config.deploy.destination,
-      recursive: true,
-      clean: true,
-      progress: true,
-      incremental: true
-    }));
-});
 
 //
 // dev tasks

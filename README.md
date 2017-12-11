@@ -4,7 +4,10 @@ Entry for the [Ludum Dare](http://ludumdare.com) #33 game jam. In case you are c
 
 ## Play in the browser
 
-You can play [at my server](http://lab.belenalbeza.com/games/ldjam-33/) or [at itch.io](http://ladybenko.itch.io/tales-of-the-underworld). Use arrow keys to move and jump.
+- [itch.io](https://ladybenko.itch.io/tales-of-the-underworld)
+- [Github mirror](https://belen-albeza.github.io/ldjam-33/)
+
+Use arrow keys to move and jump.
 
 ## To run locally
 
